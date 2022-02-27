@@ -9,11 +9,6 @@ import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-
-// import { Navigate } from "react-router";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -26,21 +21,18 @@ function Home() {
   var [englishsong, setEnglishSong] = useState([]);
   var [telugusong, setTeluguSong] = useState([]);
   const navigate = useNavigate();
-  // var  temp=1;
+  // var  a="";
 
   const playSong = (songDetails) => {
     setSongDetails(songDetails);
-    console.log(songDetails);
+
     setSongSelected(true);
   };
 
   useEffect(() => {
-    // function fetchget() {
     axios
       .get("http://online-musicplayer.herokuapp.com/song/getsong")
       .then((res) => {
-        // setResponse(res.data);
-
         songarray(res.data);
       })
       .catch((er) => {
@@ -51,17 +43,15 @@ function Home() {
     // fetchget();
   }, []);
   function songarray(songs) {
-    songs.map((song) => {
-      if (song.Language == "Tamil") {
+    songs.forEach((song) => {
+      if (song.Language === "Tamil") {
         setTamilSong([...tamilsong], tamilsong.push(song));
-      } else if (song.Language == "Telugu") {
+      } else if (song.Language === "Telugu") {
         setTeluguSong([...telugusong], telugusong.push(song));
-      } else if (song.Language == "English") {
+      } else if (song.Language === "English") {
         setEnglishSong([...englishsong], englishsong.push(song));
       }
     });
-    console.log("songs added");
-    console.log(tamilsong, englishsong, telugusong);
   }
 
   const handlePlayList = (song) => {
@@ -71,15 +61,10 @@ function Home() {
     temp.push(song);
     // }
     setPlayList(temp);
-    console.log(playlist);
-    // axios
-    // .put("https://online-musicplayer.herokuapp.com/song/getsong")
 
     setOpenPlaylist(true);
   };
   const showsong = (song) => {
-    console.log(song);
-
     return (
       <Grid item key={song._id}>
         <div>
@@ -205,33 +190,32 @@ function Home() {
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
             {}
+            {!openPlaylist && (
+              <Grid item style={{ width: "100vw" }}>
+                <h2>Tamil Songs</h2>
+              </Grid>
+            )}
+
             {!openPlaylist &&
-            <Grid item style={{ width: "100vw" }}>
-              <h2>Tamil Songs</h2>
-            </Grid>
-}
-            
-{!openPlaylist &&  tamilsong.map((song) => {
-                console.log("showsong");
+              tamilsong.map((song) => {
                 return showsong(song);
               })}
 
-{!openPlaylist &&
-            <Grid item style={{ width: "100vw" }}>
-              <h2>Telugu Songs</h2>
-            </Grid>
-           
-}
+            {!openPlaylist && (
+              <Grid item style={{ width: "100vw" }}>
+                <h2>Telugu Songs</h2>
+              </Grid>
+            )}
             {!openPlaylist &&
               telugusong?.map((song) => {
                 return showsong(song);
               })}
 
-{!openPlaylist &&
-            <Grid item style={{ width: "100vw" }}>
-              <h2>English Songs</h2>
-            </Grid>
-}
+            {!openPlaylist && (
+              <Grid item style={{ width: "100vw" }}>
+                <h2>English Songs</h2>
+              </Grid>
+            )}
             {!openPlaylist &&
               englishsong?.map((song) => {
                 return showsong(song);
@@ -239,7 +223,6 @@ function Home() {
 
             {openPlaylist &&
               playlist?.map((song) => {
-                console.log(song);
                 return (
                   <Grid item key={song._id}>
                     <Card

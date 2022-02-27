@@ -12,7 +12,7 @@ function LoginComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (email == "" || password == "") {
+      if (email === "" || password === "") {
         seterrorOccur(true);
       } else {
         var response = await axios.post(
