@@ -23,7 +23,7 @@ function Registration() {
       
       try {
         var response = await axios.post(
-          "http://online-musicplayer.herokuapp.com/signup",
+          "https://online-musicplayer.herokuapp.com/signup",
           {
             email: email,
             password: password,
