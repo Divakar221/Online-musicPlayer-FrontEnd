@@ -1,31 +1,6 @@
 .App {
   text-align: center;
 }
-
-/* audio::-webkit-media-controls-panel {
-  background-color: #56aeff;
-}
-
-audio::-webkit-media-controls-timeline {
-  background-color: #b1d4e0;
-  border-radius: 25px;
-  margin-left: 10px;
-  margin-right: 10px;
-} */
-
-/* audio::-webkit-media-controls-panel {
-  background-color: #56aeff;
-}
-
-audio::-webkit-media-controls-play-button {
-  background-color: #b1d4e0;
-  border-radius: 50%;
-}
-
-audio::-webkit-media-controls-play-button:hover {
-  background-color: rgba(177, 212, 224, 0.7);
-} */
-
 .audio{
   background-color: aqua;
   display:'flex';
@@ -51,11 +26,10 @@ body{
   margin:0
 }
 
-/* https://online-musicplayer.herokuapp.com/signup */
+
 
 .mouse:hover{
-  /* box-shadow: 10px 10px 5px 10px darkslategray;
-   */
+  
    box-shadow: 10px 18px 8px 0 rgba(6, 2, 2, 0.2), 0 16px 20px 0 rgba(18, 16, 16, 0.19);;
 }
 

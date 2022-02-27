@@ -12,7 +12,7 @@ import Modal from "@mui/material/Modal";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  // var [response, setResponse] = useState([]);
+ 
   var [songDetails, setSongDetails] = useState({ name: "test" });
   var [songSelected, setSongSelected] = useState(false);
   var [openPlaylist, setOpenPlaylist] = useState(false);
@@ -21,8 +21,7 @@ function Home() {
   var [englishsong, setEnglishSong] = useState([]);
   var [telugusong, setTeluguSong] = useState([]);
   const navigate = useNavigate();
-  // const dispatch=useDispatch();
-  // var  a="";
+  
 
   const playSong = (songDetails) => {
     setSongDetails(songDetails);
@@ -30,8 +29,12 @@ function Home() {
     setSongSelected(true);
   };
 
+
+  /* useEffect to fetch data from the data base */
   useEffect(() => {
     function songarray(songs) {
+
+      /* splitting songs based on language */
       songs.forEach((song) => {
         if (song.Language === "Tamil") {
           setTamilSong([...tamilsong], tamilsong.push(song));
@@ -53,21 +56,23 @@ function Home() {
         console.log(er);
       });
 
-    // }
-    // fetchget();
+   
   },[openPlaylist]);
 
 
+  /* playList handling */
   const handlePlayList = (song) => {
     var temp = playlist;
 
-    // if(!temp.includes(song)){
+   
     temp.push(song);
-    // }
+   
     setPlayList(temp);
 
     setOpenPlaylist(true);
   };
+
+  /* Display song based on song language as a Function call */
   const showsong = (song) => {
     return (
       <Grid item key={song._id}>
@@ -125,17 +130,20 @@ function Home() {
     );
   };
 
+
+  /* Home Return Starts Here  */
   return (
     <div className="home">
       {localStorage.getItem("token") != null && (
         <div>
+
+          {/* Nav Bar for Music Application */}
           <AppBar
             position="static"
             style={{ backgroundColor: "black", opacity: "0.7" }}
           >
             <div style={{ display: "flex" }}>
-              {/* <TextField label="Search" variant="outlined" color="secondary" className="white" style={{alignItems:"center", margin: "" , color:"white"}}/>
-               */}
+              
               <input type="text" placeholder="Search" className="white" />
               <Typography
                 variant="h5"
@@ -185,6 +193,7 @@ function Home() {
             </div>
           </AppBar>
 
+          {/* Condition for Displaying songs in Grid */}
           <Grid
             alignContent="center"
             justifyContent="center"
@@ -257,12 +266,14 @@ function Home() {
                 );
               })}
           </Grid>
+
+          {/* Modal for popup while Clicking a song */}
           <Modal
             open={songSelected}
             onClose={() => {
               setSongSelected(false);
             }}
-            style={{ backgroundColor: "red", margin: "10% 30%" }}
+            style={{ backgroundColor: "", margin: "10% 30%" }}
             className="app"
           >
             <div
@@ -272,6 +283,8 @@ function Home() {
                 justifyContent: "center",
               }}
             >
+
+              {/* Card content for Song */}
               <Card
                 sx={{ maxWidth: 800, minWidth: 600, minHeight: 250 }}
                 style={{ textAlign: "center" }}

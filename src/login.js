@@ -9,6 +9,7 @@ function LoginComponent() {
   const navigate = useNavigate();
   const [errorOccur, seterrorOccur] = React.useState(false);
 
+  /* Username Password Validation */
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -16,13 +17,13 @@ function LoginComponent() {
         seterrorOccur(true);
       } else {
         var response = await axios.post(
-          "https://online-musicplayer.herokuapp.com/signin",
+          "http://online-musicplayer.herokuapp.com/signin",
           {
             email: email,
             password: password,
           }
         );
-        console.log(response);
+
         if (response.data) {
           await localStorage.setItem("token", response.data);
           await localStorage.setItem("userEmail", email);
@@ -34,6 +35,8 @@ function LoginComponent() {
       console.log(err);
     }
   };
+
+  /*Login return Starts Here */
   return (
     <div style={{}} className="login">
       <Typography variant="h4" component="div" paddingTop="30px">
@@ -59,7 +62,7 @@ function LoginComponent() {
         </div>{" "}
         <br />
         <div>
-          {/* <TextField label="Password" type="password" variant="filled"  focused /> */}
+          
           <TextField
             label="Password"
             type="password"
@@ -75,9 +78,14 @@ function LoginComponent() {
           Login{" "}
         </Button>
         <br />
-       <Button onClick={()=>{
-         navigate("/register")
-       }}> New user? Register</Button>
+        <Button
+          onClick={() => {
+            navigate("/register");
+          }}
+        >
+          {" "}
+          New user? Register
+        </Button>
       </form>
     </div>
   );

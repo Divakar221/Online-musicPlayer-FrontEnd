@@ -1,59 +1,59 @@
-import { Button, TextField } from '@mui/material'
-import React from 'react';
-import axios from 'axios';
-import { Link,useNavigate } from 'react-router-dom';
-
+import { Alert, Button, TextField } from "@mui/material";
+import React from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 function Registration() {
-    const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setconfirmPassword] = React.useState("");
-  const[name,setName]=React.useState("")
-  const[err,setErr]=React.useState("")
-  // import {useNavigate} from 'react-router-dom';
+  const [name, setName] = React.useState("");
+  const [err, setErr] = React.useState("");
 
 
   const navigate = useNavigate();
-  // var err=""
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(password===confirmPassword){
-      console.log("success")
-      try{
-        var response = await axios.post('https://online-musicplayer.herokuapp.com/signup', {
+    /*Validation part for the Password and posting datas in Mongo DB */
+
+    if (password === confirmPassword) {
+      
+      try {
+        var response = await axios.post(
+          "http://online-musicplayer.herokuapp.com/signup",
+          {
             email: email,
             password: password,
-            name:name
-  
-            
-        })
-        console.log(response);
-        if(response.data) {
-           
-  
-            
-            navigate('/');
-        }
-    }catch(err) {
-        console.log(err)
-    }
-  
-      // navigate('/');
-    }else{
-      setErr("Incorrect Password")
-      console.log(err)
-    }
-   
-  }
+            name: name,
+          }
+        );
+        
+        if (response.data && email !== "" && password !== "") {
+          setErr("Please Enter the Details");
 
+          <Alert severity="success">sucessfully Registered</Alert>;
+          navigate("/");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      
+    } else {
+      setErr("Incorrect Password");
+      console.log(err);
+    }
+  };
+
+  /* Registration return Starts here  */
   return (
-    <div className="login" style={{paddingTop:"30px"}}>
-        <h1>Registration</h1>
-        <form onSubmit={handleSubmit}>
+    <div className="login" style={{ paddingTop: "30px" }}>
+      <h1>Registration Page</h1>
+      <form onSubmit={handleSubmit}>
         <div>
-            
           <TextField
             type="text"
             name="name"
@@ -65,9 +65,8 @@ function Registration() {
         </div>{" "}
         <br />
         <div>
-            
           <TextField
-            type="text"
+            type="email"
             name="email"
             label="Email"
             color="success"
@@ -77,8 +76,6 @@ function Registration() {
         </div>{" "}
         <br />
         <div>
-         
-         
           <TextField
             label="Password"
             type="password"
@@ -87,7 +84,8 @@ function Registration() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <br /><br />
+          <br />
+          <br />
           <TextField
             label="Confirm Password"
             type="password"
@@ -96,7 +94,7 @@ function Registration() {
             value={confirmPassword}
             onChange={(e) => setconfirmPassword(e.target.value)}
           />
-  <br />
+          <br />
           {err}
         </div>{" "}
         <br />
@@ -105,14 +103,10 @@ function Registration() {
           Submit{" "}
         </Button>
         <br /> <br />
-        <Link to="/"  >Already Registed? Click to Login</Link>
-
-        </form>
-
-
-
+        <Link to="/">Already Registed? Click to Login</Link>
+      </form>
     </div>
-  )
+  );
 }
 
-export default Registration
+export default Registration;
