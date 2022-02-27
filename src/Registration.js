@@ -22,7 +22,7 @@ function Registration() {
     if(password===confirmPassword){
       console.log("success")
       try{
-        var response = await axios.post('http://online-musicplayer.herokuapp.com//signup', {
+        var response = await axios.post('https://online-musicplayer.herokuapp.com/signup', {
             email: email,
             password: password,
             name:name

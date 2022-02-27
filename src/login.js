@@ -16,7 +16,7 @@ function LoginComponent() {
         seterrorOccur(true);
       } else {
         var response = await axios.post(
-          "http://online-musicplayer.herokuapp.com/signin",
+          "https://online-musicplayer.herokuapp.com/signin",
           {
             email: email,
             password: password,

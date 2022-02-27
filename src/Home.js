@@ -17,10 +17,11 @@ function Home() {
   var [songSelected, setSongSelected] = useState(false);
   var [openPlaylist, setOpenPlaylist] = useState(false);
   var [playlist, setPlayList] = useState([]);
-  var [tamilsong, setTamilSong] = useState([]);
+  var [tamilsong, setTamilSong] = React.useState([]);
   var [englishsong, setEnglishSong] = useState([]);
   var [telugusong, setTeluguSong] = useState([]);
   const navigate = useNavigate();
+  // const dispatch=useDispatch();
   // var  a="";
 
   const playSong = (songDetails) => {
@@ -30,10 +31,23 @@ function Home() {
   };
 
   useEffect(() => {
+    function songarray(songs) {
+      songs.forEach((song) => {
+        if (song.Language === "Tamil") {
+          setTamilSong([...tamilsong], tamilsong.push(song));
+        } else if (song.Language === "Telugu") {
+          setTeluguSong([...telugusong], telugusong.push(song));
+        } else if (song.Language === "English") {
+          setEnglishSong([...englishsong], englishsong.push(song));
+        }
+      });
+    
+  }
     axios
-      .get("http://online-musicplayer.herokuapp.com/song/getsong")
+      .get("https://online-musicplayer.herokuapp.com/song/getsong")
       .then((res) => {
-        songarray(res.data);
+       
+        songarray(res.data)
       })
       .catch((er) => {
         console.log(er);
@@ -41,18 +55,8 @@ function Home() {
 
     // }
     // fetchget();
-  }, []);
-  function songarray(songs) {
-    songs.forEach((song) => {
-      if (song.Language === "Tamil") {
-        setTamilSong([...tamilsong], tamilsong.push(song));
-      } else if (song.Language === "Telugu") {
-        setTeluguSong([...telugusong], telugusong.push(song));
-      } else if (song.Language === "English") {
-        setEnglishSong([...englishsong], englishsong.push(song));
-      }
-    });
-  }
+  },[openPlaylist]);
+
 
   const handlePlayList = (song) => {
     var temp = playlist;
