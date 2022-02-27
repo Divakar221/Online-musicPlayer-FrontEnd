@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Typography, TextField, Button, Link, Alert } from "@mui/material";
+import { Typography, TextField, Button, Alert } from "@mui/material";
 
 function LoginComponent() {
   const [email, setEmail] = React.useState("");
@@ -75,7 +75,9 @@ function LoginComponent() {
           Login{" "}
         </Button>
         <br />
-        <Link href="/register">New user? Register</Link>
+       <Button onClick={()=>{
+         navigate("/register")
+       }}> New user? Register</Button>
       </form>
     </div>
   );
