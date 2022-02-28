@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography, TextField, Button, Alert } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function LoginComponent() {
   const [email, setEmail] = React.useState("");
@@ -73,9 +75,22 @@ function LoginComponent() {
           />
         </div>{" "}
         <br />
+        
         <Button variant="contained" type="submit">
+
           {" "}
           Login{" "}
+          <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
         </Button>
         <br />
         <Button

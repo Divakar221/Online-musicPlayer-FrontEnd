@@ -57,7 +57,7 @@ function Home() {
       });
 
    
-  },[openPlaylist]);
+  },[]);
 
 
   /* playList handling */
