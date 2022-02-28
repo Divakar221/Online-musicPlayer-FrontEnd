@@ -2,8 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Typography, TextField, Button, Alert } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function LoginComponent() {
   const [email, setEmail] = React.useState("");
@@ -14,26 +14,37 @@ function LoginComponent() {
   /* Username Password Validation */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       if (email === "" || password === "") {
+        toast.error('Please Enter valid Details')
         seterrorOccur(true);
       } else {
+        
         var response = await axios.post(
-          "https://online-musicplayer.herokuapp.com/signin",
+          "http://localhost:3001/signin",
           {
             email: email,
             password: password,
           }
-        );
+        )
+        if(response){
+        toast.success("sucessfully logged in")
+        }
+        
 
         if (response.data) {
+          
           await localStorage.setItem("token", response.data);
           await localStorage.setItem("userEmail", email);
 
           navigate("/home");
         }
+         
+      
       }
     } catch (err) {
+      toast.error('Invalid Credentials')
       console.log(err);
     }
   };
@@ -64,7 +75,6 @@ function LoginComponent() {
         </div>{" "}
         <br />
         <div>
-          
           <TextField
             label="Password"
             type="password"
@@ -75,22 +85,20 @@ function LoginComponent() {
           />
         </div>{" "}
         <br />
-        
-        <Button variant="contained" type="submit">
-
+        <Button variant="contained" type="submit" >
           {" "}
           Login{" "}
           <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-/>
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </Button>
         <br />
         <Button

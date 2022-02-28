@@ -1,7 +1,8 @@
-import { Alert, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Registration() {
   const [email, setEmail] = React.useState("");
@@ -33,8 +34,9 @@ function Registration() {
         
         if (response.data && email !== "" && password !== "") {
           setErr("Please Enter the Details");
+          toast.error("Please Fill the correct Details")
 
-          <Alert severity="success">sucessfully Registered</Alert>;
+          
           navigate("/");
         }
       } catch (err) {

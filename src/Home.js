@@ -12,7 +12,6 @@ import Modal from "@mui/material/Modal";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
- 
   var [songDetails, setSongDetails] = useState({ name: "test" });
   var [songSelected, setSongSelected] = useState(false);
   var [openPlaylist, setOpenPlaylist] = useState(false);
@@ -20,8 +19,11 @@ function Home() {
   var [tamilsong, setTamilSong] = React.useState([]);
   var [englishsong, setEnglishSong] = useState([]);
   var [telugusong, setTeluguSong] = useState([]);
+  var [search, setSearch] = useState({ search: "" });
+  var [opensearch, setopensearch] = useState(false);
   const navigate = useNavigate();
-  
+  var [find,setFind]=useState([])
+  // var [check, setCheck] = useState(true);
 
   const playSong = (songDetails) => {
     setSongDetails(songDetails);
@@ -29,11 +31,15 @@ function Home() {
     setSongSelected(true);
   };
 
+  const handleChange = (e) => {
+    setSearch({ ...search, [e.target.name]: e.target.value });
+    console.log("working");
+  };
 
   /* useEffect to fetch data from the data base */
   useEffect(() => {
+    // toast.success("Successfully Logged in")
     function songarray(songs) {
-
       /* splitting songs based on language */
       songs.forEach((song) => {
         if (song.Language === "Tamil") {
@@ -44,32 +50,33 @@ function Home() {
           setEnglishSong([...englishsong], englishsong.push(song));
         }
       });
-    
-  }
+    }
     axios
       .get("https://online-musicplayer.herokuapp.com/song/getsong")
       .then((res) => {
-       
-        songarray(res.data)
+        songarray(res.data);
       })
       .catch((er) => {
         console.log(er);
       });
-
-   
-  },[]);
-
+  }, []);
+  const handleremove = (song) => {
+    var temp = playlist;
+    temp.splice(temp.indexOf(song), 1);
+    setPlayList(temp);
+    // console.log(song);
+    // setCheck(true);
+  };
 
   /* playList handling */
   const handlePlayList = (song) => {
     var temp = playlist;
+    if (!temp.includes(song)) {
+      temp.push(song);
 
-   
-    temp.push(song);
-   
-    setPlayList(temp);
-
-    setOpenPlaylist(true);
+      setPlayList(temp);
+    }
+    // setCheck(false);
   };
 
   /* Display song based on song language as a Function call */
@@ -99,7 +106,7 @@ function Home() {
                 {song.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {song.name}
+                {song.lyrics}
               </Typography>
             </CardContent>
             <CardActions>
@@ -121,7 +128,13 @@ function Home() {
                   Add to Playlist
                 </Button>
               ) : (
-                <></>
+                <Button
+                  onClick={() => {
+                    handleremove(song);
+                  }}
+                >
+                  Remove
+                </Button>
               )}
             </CardActions>
           </Card>
@@ -130,21 +143,31 @@ function Home() {
     );
   };
 
-
   /* Home Return Starts Here  */
   return (
     <div className="home">
       {localStorage.getItem("token") != null && (
         <div>
-
           {/* Nav Bar for Music Application */}
           <AppBar
             position="static"
             style={{ backgroundColor: "black", opacity: "0.7" }}
           >
             <div style={{ display: "flex" }}>
-              
-              <input type="text" placeholder="Search" className="white" />
+              <input
+                type="text"
+                name="search"
+                value={search.search}
+                onChange={(e) => handleChange(e)}
+              />
+              <Button
+                variant="contained"
+                onClick={() => {
+                  setopensearch(true);
+                }}
+              >
+                Search
+              </Button>
               <Typography
                 variant="h5"
                 component="div"
@@ -168,6 +191,17 @@ function Home() {
                 </Button>
               )}
 
+              {(openPlaylist || opensearch) && (
+                <Button
+                  style={{ color: "red" }}
+                  onClick={() => {
+                    setOpenPlaylist(false);
+                    setopensearch(false);
+                  }}
+                >
+                  Home
+                </Button>
+              )}
               <Button
                 variant="h6"
                 // noWrap
@@ -179,17 +213,6 @@ function Home() {
               >
                 LogOut
               </Button>
-
-              {openPlaylist && (
-                <Button
-                  style={{ color: "red" }}
-                  onClick={() => {
-                    setOpenPlaylist(false);
-                  }}
-                >
-                  Home
-                </Button>
-              )}
             </div>
           </AppBar>
 
@@ -203,39 +226,77 @@ function Home() {
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
             {}
-            {!openPlaylist && (
+            {!openPlaylist && !opensearch && (
               <Grid item style={{ width: "100vw" }}>
                 <h2>Tamil Songs</h2>
               </Grid>
             )}
 
             {!openPlaylist &&
+              !opensearch &&
               tamilsong.map((song) => {
                 return showsong(song);
               })}
 
-            {!openPlaylist && (
+            {!openPlaylist && !opensearch && (
               <Grid item style={{ width: "100vw" }}>
                 <h2>Telugu Songs</h2>
               </Grid>
             )}
             {!openPlaylist &&
+              !opensearch &&
               telugusong?.map((song) => {
                 return showsong(song);
               })}
 
-            {!openPlaylist && (
+            {!openPlaylist && !opensearch && (
               <Grid item style={{ width: "100vw" }}>
                 <h2>English Songs</h2>
               </Grid>
             )}
             {!openPlaylist &&
+              !opensearch &&
               englishsong?.map((song) => {
                 return showsong(song);
               })}
-
+{/* playlist Funcationality */}
             {openPlaylist &&
+              !opensearch &&
               playlist?.map((song) => {
+                return (
+                  <Grid item key={song._id}>
+                    <Card
+                      sx={{ maxWidth: 345, minWidth: 300, minHeight: 250 }}
+                      onClick={() => {
+                        playSong(song);
+                      }}
+                    >
+                      <CardMedia
+                        component="img"
+                        height="200"
+                        image={song.img}
+                        alt={song.name}
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {song.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {song.name}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button size="small">Play</Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                );
+              })}
+
+{/* search functionality */}
+            {!openPlaylist &&
+              opensearch &&
+              find?.map((song) => {
                 return (
                   <Grid item key={song._id}>
                     <Card
@@ -283,10 +344,9 @@ function Home() {
                 justifyContent: "center",
               }}
             >
-
               {/* Card content for Song */}
               <Card
-                sx={{ maxWidth: 800, minWidth: 600, minHeight: 250 }}
+                sx={{ maxWidth: 300, minWidth: 350, minHeight: 250 }}
                 style={{ textAlign: "center" }}
               >
                 <CardMedia
