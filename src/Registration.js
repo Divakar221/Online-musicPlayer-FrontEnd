@@ -33,6 +33,7 @@ function Registration() {
         );
         
         if (response.data && email !== "" && password !== "") {
+          
           setErr("Please Enter the Details");
           toast.error("Please Fill the correct Details")
 
@@ -45,6 +46,7 @@ function Registration() {
 
       
     } else {
+      toast.error("Incorrect password")
       setErr("Incorrect Password");
       console.log(err);
     }
@@ -105,6 +107,7 @@ function Registration() {
           Submit{" "}
         </Button>
         <br /> <br />
+      
         <Link to="/">Already Registed? Click to Login</Link>
       </form>
     </div>

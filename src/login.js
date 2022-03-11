@@ -14,40 +14,34 @@ function LoginComponent() {
   /* Username Password Validation */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       if (email === "" || password === "") {
-        toast.error('Please Enter valid Details')
+        // toast.error("Please Enter valid Details");
         seterrorOccur(true);
       } else {
-        
-        var response = await axios.post(
-          "https://online-musicplayer.herokuapp.com/signin",
-          {
-            email: email,
-            password: password,
-          }
-        )
-        if(response){
-        toast.success("sucessfully logged in")
+        var response = await axios.post("https://online-musicplayer.herokuapp.com/signin", {
+          email: email,
+          password: password,
+        });
+        if (response) {
+          toast.success("sucessfully logged in");
         }
-        
 
         if (response.data) {
-          
           await localStorage.setItem("token", response.data);
           await localStorage.setItem("userEmail", email);
 
           navigate("/home");
         }
-         
-      
       }
     } catch (err) {
-      toast.error('Invalid Credentials')
+      toast.error("Invalid Credentials");
       console.log(err);
     }
   };
+
+  // console.log(email, password);
 
   /*Login return Starts Here */
   return (
@@ -85,12 +79,12 @@ function LoginComponent() {
           />
         </div>{" "}
         <br />
-        <Button variant="contained" type="submit" >
+        <Button variant="contained" type="submit">
           {" "}
           Login{" "}
           <ToastContainer
             position="top-right"
-            autoClose={5000}
+            autoClose={2000}
             hideProgressBar={false}
             newestOnTop={false}
             closeOnClick

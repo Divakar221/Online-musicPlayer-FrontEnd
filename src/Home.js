@@ -22,7 +22,7 @@ function Home() {
   var [search, setSearch] = useState({ search: "" });
   var [opensearch, setopensearch] = useState(false);
   const navigate = useNavigate();
-  var [find,setFind]=useState([])
+  var [find, setFind] = useState([]);
   // var [check, setCheck] = useState(true);
 
   const playSong = (songDetails) => {
@@ -34,9 +34,13 @@ function Home() {
   const handleChange = (e) => {
     setSearch({ ...search, [e.target.name]: e.target.value });
     console.log("working");
+    e.filter((f) => {
+      f.toLowerCase();
+    });
   };
 
   /* useEffect to fetch data from the data base */
+
   useEffect(() => {
     // toast.success("Successfully Logged in")
     function songarray(songs) {
@@ -148,26 +152,33 @@ function Home() {
     <div className="home">
       {localStorage.getItem("token") != null && (
         <div>
-          {/* Nav Bar for Music Application */}
+          {/* App Bar for Music Application */}
           <AppBar
+            sx={{ height: "80px" }}
             position="static"
             style={{ backgroundColor: "black", opacity: "0.7" }}
           >
             <div style={{ display: "flex" }}>
-              <input
-                type="text"
-                name="search"
-                value={search.search}
-                onChange={(e) => handleChange(e)}
-              />
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setopensearch(true);
-                }}
-              >
-                Search
-              </Button>
+              <div style={{ display: "flex" }}>
+                <input
+                  type="text"
+                  name="search"
+                  value={search.search}
+                  className="white"
+                  onChange={(e) => handleChange(e)}
+                />{" "}
+                &nbsp;&nbsp;&nbsp;
+                <Button
+                  variant="contained"
+                  className="white"
+                  style={{ marginTop: "29px" }}
+                  onClick={() => {
+                    setopensearch(true);
+                  }}
+                >
+                  Search
+                </Button>
+              </div>
               <Typography
                 variant="h5"
                 component="div"
@@ -177,7 +188,7 @@ function Home() {
                   display: { xs: "none", sm: "block" },
                 }}
               >
-                Music Player
+                Divakar's Online Music Player
               </Typography>
 
               {!openPlaylist && (
@@ -216,7 +227,7 @@ function Home() {
             </div>
           </AppBar>
 
-          {/* Condition for Displaying songs in Grid */}
+          {/* Condition for Displaying songs in Grid  Home Page , Playlist ,Search*/}
           <Grid
             alignContent="center"
             justifyContent="center"
@@ -232,6 +243,7 @@ function Home() {
               </Grid>
             )}
 
+            {/* show song indicates cards per iteration */}
             {!openPlaylist &&
               !opensearch &&
               tamilsong.map((song) => {
@@ -259,7 +271,8 @@ function Home() {
               englishsong?.map((song) => {
                 return showsong(song);
               })}
-{/* playlist Funcationality */}
+
+            {/* playlist Funcationality */}
             {openPlaylist &&
               !opensearch &&
               playlist?.map((song) => {
@@ -293,7 +306,7 @@ function Home() {
                 );
               })}
 
-{/* search functionality */}
+            {/* search functionality */}
             {!openPlaylist &&
               opensearch &&
               find?.map((song) => {
